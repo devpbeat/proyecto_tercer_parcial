@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Pedido</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        .center-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body class="container mt-5">
+    <div class="d-flex justify-content-center">
+        <div class="card border-dark mb-3">
+            <h2 class="card-header text-center">Crear Pedido</h2>
+            <div class="card-body">
+                <form action="/pedidos/crear" method="POST">
+                    <div class="form-group">
+                        <label for="fechaPedido">Fecha del Pedido:</label>
+                        <input type="datetime-local" class="form-control" id="fechaPedido" name="fechaPedido">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaEntregado">Fecha de Entrega:</label>
+                        <input type="datetime-local" class="form-control" id="fechaEntregado" name="fechaEntregado">
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente">Cliente:</label>
+                        <select class="form-control" id="cliente" name="clienteId">
+                            <option value="">Selecciona el cliente</option>
+                            <option th:each="cliente : ${clientes}"
+                                    th:value="${cliente.id}"
+                                    th:text="${cliente.nombres} + ' ' + ${cliente.apellidos}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado del Pedido:</label>
+                        <select class="form-control" id="estado" name="estadoId">
+                            <option value="">Selecciona el estado del pedido</option>
+                            <option th:each="estado : ${estados}"
+                                    th:value="${estado.id}"
+                                    th:text="${estado.nombre}">
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+					    <label for="productosSeleccionados">Productos:</label>
+					    <select class="form-control selectpicker" id="productosSeleccionados" name="productosSeleccionados" multiple="multiple" data-live-search="true">
+					        <option th:each="producto : ${productos}"
+					                th:value="${producto.id}"
+					                th:text="${producto.nombre + ' - $' + producto.precio}">
+					        </option>
+					    </select>
+					</div>
+					
+					<div class="form-group">
+					    <label for="total">Total:</label>
+					    <input type="number" class="form-control" id="total" name="total" step="0.01" readonly>
+					</div>
+                    <div class="center-button">
+                        <button type="submit" class="btn btn-outline-dark">Crear Pedido</button>
+                    </div>
+                </form>
+                <div class="center-button">
+                    <a href="/pedidos/" class="btn btn-outline-dark">
+                        <i class="fas fa-arrow-left mr-2"></i>Atrás
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+	    /*<![CDATA[*/
+	    var productos = /*[[${productos}]]*/ null; // Aquí debes proporcionar los datos de los productos en formato JSON
+	    /*]]>*/
+	</script>
+	<script>
+	    $('#productosSeleccionados').on('change', function() {
+	        var total = 0;
+	        // Obtiene los valores seleccionados
+	        var selectedProducts = $(this).val();
+	        if (selectedProducts) {
+	            // Convierte los valores seleccionados en un arreglo
+	            selectedProducts = Array.from(selectedProducts);
+	            // Itera a través de los valores seleccionados
+	            for (var i = 0; i < selectedProducts.length; i++) {
+	                var productId = selectedProducts[i];
+	                // Busca el producto en la lista de productos
+	                var product = productos.find(function(item) {
+	                    return item.id == productId;
+	                });
+	                if (product) {
+	                    total += product.precio;
+	                }
+	            }
+	        }
+	        // Actualiza el campo de total
+	        $('#total').val(total.toFixed(2));
+	    });
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="container mt-5">
+    <div class="d-flex justify-content-center">
+        <div class="card border-dark mb-3">
+            <h2 class="card-header text-center">Clientes</h2>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="filtro" placeholder="Filtrar" onkeyup="filtrarTabla()">
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button onclick="window.location.href='/clientes/nuevo'" class="btn btn-outline-dark">
+                            <i class="fas fa-plus mr-2"></i>Agregar Cliente
+                        </button>
+                        <a href="/principal/inicio" class="btn btn-outline-dark ml-2">
+                            <i class="fas fa-arrow-left mr-2"></i>Volver al Menú Principal
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="tablaClientes">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Dirección</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Documento</th>
+                                <th>RUC</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="cliente : ${clientes}" data-cliente-id="${cliente.id}">
+                                <td th:text="${cliente.id}"></td>
+                                <td th:text="${cliente.nombres}"></td>
+                                <td th:text="${cliente.apellidos}"></td>
+                                <td th:text="${cliente.direccion}"></td>
+                                <td th:text="${cliente.email}"></td>
+                                <td th:text="${cliente.telefono}"></td>
+                                <td th:text="${cliente.documento}"></td>
+                                <td th:text="${cliente.ruc}"></td>
+                                <td>
+                                    <a th:href="@{'/clientes/ver_cliente/' + ${cliente.id} + '?modo=ver&id=' + ${cliente.id}}"
+                                        class="btn btn-link p-0 text-dark">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{'/editar_cliente/' + ${cliente.id}}"
+                                        class="btn btn-link p-0 text-dark">
+                                        <i class="far fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-link p-0 text-dark borrar-cliente">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.borrar-cliente').forEach(item => {
+            item.addEventListener('click', event => {
+                const row = event.target.closest('tr');
+                const clienteId = row.querySelectorAll('td')[0].textContent;
+                if (confirm('¿Estás seguro que deseas borrar este cliente?')) {
+                    fetch(`/clientes/borrar_cliente/${clienteId}`, {
+                        method: 'POST'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            throw new Error('Error al borrar el cliente');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
