@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Distancia al Punto "B"</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-4">Calcular Distancia al Punto "B"</h1>
+    <div class="mb-4">
+        <p>¿A qué distancia de “B” se debe ubicar el apoyo fijo para que la barra de peso despreciable y 3m de longitud, este horizontalmente en equilibrio? Si W1=4N, W2=10N y las poleas son de pesos despreciables. (20p)</p>
+    </div>
+    <div>
+        <img src="/imagen_ejercicio.png" alt="Imagen de la barra">
+    </div>
+    <form action="/calcular/resultado" method="post">
+        <div class="form-group">
+            <label for="w1">Fuerza W1 (N):</label>
+            <input type="number" class="form-control" id="w1" name="w1" required>
+        </div>
+        <div class="form-group">
+            <label for="w2">Fuerza W2 (N):</label>
+            <input type="number" class="form-control" id="w2" name="w2" required>
+        </div>
+        <div class="form-group">
+            <label for="w2">Longitud (m):</label>
+            <input type="number" class="form-control" id="longitud" name="longitud" required>
+        </div>
+        <button type="submit" class="btn btn-outline-dark btn-block">Calcular Distancia</button>
+    </form>
+    <div class="mt-4" th:if="${distanciaB != null}">
+        <p>La distancia en la que debe estar B del apoyo fijo, es de <strong th:text="${distanciaB}"></strong> m.</p>
+    </div>
+</div>
+</body>
+</html>

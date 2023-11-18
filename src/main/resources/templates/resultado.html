@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado del Equilibrio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-4">Resultado</h1>
+    <p th:text="'El punto de apoyo debe estar a ' + ${puntoApoyo} + ' metros de W1 para que la barra esté en equilibrio.'"></p>
+</div>
+</body>
+</html>
